@@ -34,7 +34,7 @@ class ofApp : public ofBaseApp{
 		float colorScale, colorSpeed, elapsedTime;
 
 		ofColor samplePalette(float t);
-		float fbm(float x, float y, int octaves = 4, float persitence = 0.5f);
+		float fbm(float x, float y, int octaves = 4, float persistence = 0.5f);
 };
 
 
