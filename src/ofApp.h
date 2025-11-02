@@ -33,29 +33,41 @@ class ofApp : public ofBaseApp{
 		vector <ofColor> palette;
 		float colorScale, colorSpeed, elapsedTime;
 
+		//automatic color change
+		float colorChangeInterval, lastColorChangeTime;
+		ofVec2f colorNoiseOffset;  //fixed offset so gradient doesn't move
+
+		//smooth transitions for perlin parameters
+		float perlinRangeTarget, perlinHeightTarget, perlinLerpSpeed;
+
+
 		ofColor samplePalette(float t);
 		float fbm(float x, float y, int octaves = 4, float persistence = 0.5f);
+
+		//helpers
+		void generateRandomPalette();
+		float averageHueOfPalette();
 };
 
 
 // Linearly interpolates between colors in the palette based on t in [0,1]
-ofColor ofApp::samplePalette(float t) {
-	if (palette.empty()) return ofColor::black;
-	if (palette.size() == 1) return palette[0];
-
-	// Clamp t to [0,1]
-	t = ofClamp(t, 0.0f, 1.0f);
-
-	float scaled = t * (palette.size() - 1);
-	int idx0 = static_cast<int>(floor(scaled));
-	int idx1 = idx0 + 1;
-	float frac = scaled - idx0;
-
-	if (idx1 >= palette.size()) {
-		idx1 = palette.size() - 1;
-		idx0 = idx1;
-		frac = 0.0f;
-	}
-
-	return palette[idx0].getLerped(palette[idx1], frac);
-}
+//ofColor ofApp::samplePalette(float t) {
+//	if (palette.empty()) return ofColor::black;
+//	if (palette.size() == 1) return palette[0];
+//
+//	// Clamp t to [0,1]
+//	t = ofClamp(t, 0.0f, 1.0f);
+//
+//	float scaled = t * (palette.size() - 1);
+//	int idx0 = static_cast<int>(floor(scaled));
+//	int idx1 = idx0 + 1;
+//	float frac = scaled - idx0;
+//
+//	if (idx1 >= palette.size()) {
+//		idx1 = palette.size() - 1;
+//		idx0 = idx1;
+//		frac = 0.0f;
+//	}
+//
+//	return palette[idx0].getLerped(palette[idx1], frac);
+//}
