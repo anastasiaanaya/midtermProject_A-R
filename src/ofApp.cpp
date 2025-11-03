@@ -5,6 +5,18 @@ vector<ofColor> palette;
 //--------------------------------------------------------------
 void ofApp::setup(){
 
+	pointLight.setup();
+	pointLight.setPosition(100, 100, 400);
+	pointLight.enable();
+	ofEnableLighting();
+	ofEnableDepthTest();
+
+	//ofFloatColor randomColor(ofRandom(1.0), ofRandom(1.0), ofRandom(1.0));
+	/*boxMaterial.setDiffuseColor(randomColor);*/
+	boxMaterial.setShininess(0.02);
+
+
+
 	//width and height for our mesh and initial rendering values
 	width = 50;
 	height = 50;
@@ -38,7 +50,7 @@ void ofApp::setup(){
 	meshNoiseSpeed = 0.3f; //mdoderate speed
 
 
-	ofBackground(0); //now black change it later if the colours didn't appreciate corerctly
+	ofBackground(10); //now black change it later if the colours didn't appreciate corerctly
 	mainCam.setPosition(0, 0, 80);//initial position for the 3D viewer
 
 	//make the points inside the mesh
@@ -71,6 +83,7 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update() {
+
 
 	elapsedTime = ofGetElapsedTimef();
 	meshNoiseTime += ofGetLastFrameTime() * meshNoiseSpeed;
@@ -143,6 +156,8 @@ void ofApp::update() {
 		ofColor c = samplePalette(n);
 		//Assign color to mesh vertex
 		mainMesh.setColor(i, c);
+		boxMaterial.setDiffuseColor(c+100);
+
 	}
 }
 
@@ -150,7 +165,9 @@ void ofApp::update() {
 void ofApp::draw(){
 
 	mainCam.begin();
-
+	ofFill();
+	
+		
 	if (b_drawWireFrame) {
 		//draw wireframe black while also drawing the filled mesh
 		ofEnableDepthTest();
@@ -165,8 +182,16 @@ void ofApp::draw(){
 	} else {
 		mainMesh.drawVertices();
 	}
-	mainCam.end();
 
+	boxMaterial.begin();
+	ofPushMatrix();
+	ofScale(0.1, 0.1, 0.2); // Escala al 50% en cada eje
+	// Dibuja tu figura aquí
+	box.draw();
+	ofPopMatrix();
+
+	mainCam.end();
+	boxMaterial.end();
 }
 
 //--------------------------------------------------------------
