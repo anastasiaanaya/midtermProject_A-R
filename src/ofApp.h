@@ -28,6 +28,14 @@ class ofApp : public ofBaseApp{
 		bool b_messyMesh, b_perlinMesh, b_drawWireFrame;
 		float perlinRange, perlinHeight;
 
+
+
+		ofBoxPrimitive box;
+		ofLight pointLight;
+		ofMaterial boxMaterial;
+
+
+
 		//color gradient
 		int paletteSize;
 		vector <ofColor> palette;

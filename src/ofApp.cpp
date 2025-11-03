@@ -5,6 +5,18 @@ vector<ofColor> palette;
 //--------------------------------------------------------------
 void ofApp::setup(){
 
+	pointLight.setup();
+	pointLight.setPosition(100, 100, 400);
+	pointLight.enable();
+	ofEnableLighting();
+	ofEnableDepthTest();
+
+	//ofFloatColor randomColor(ofRandom(1.0), ofRandom(1.0), ofRandom(1.0));
+	boxMaterial.setDiffuseColor(ofFloatColor::red);
+	boxMaterial.setShininess(0.02);
+
+
+
 	//width and height for our mesh and initial rendering values
 	width = 50;
 	height = 50;
@@ -145,7 +157,8 @@ void ofApp::update() {
 void ofApp::draw(){
 
 	mainCam.begin();
-
+	
+		
 	if (b_drawWireFrame) {
 		//draw wireframe black while also drawing the filled mesh
 		ofEnableDepthTest();
@@ -160,8 +173,16 @@ void ofApp::draw(){
 	} else {
 		mainMesh.drawVertices();
 	}
-	mainCam.end();
 
+	boxMaterial.begin();
+	ofPushMatrix();
+	ofScale(0.1, 0.1, 0.2); // Escala al 50% en cada eje
+	// Dibuja tu figura aquí
+	box.draw();
+	ofPopMatrix();
+
+	mainCam.end();
+	boxMaterial.end();
 }
 
 //--------------------------------------------------------------
