@@ -12,7 +12,7 @@ void ofApp::setup(){
 	ofEnableDepthTest();
 
 	//ofFloatColor randomColor(ofRandom(1.0), ofRandom(1.0), ofRandom(1.0));
-	boxMaterial.setDiffuseColor(ofFloatColor::red);
+	/*boxMaterial.setDiffuseColor(randomColor);*/
 	boxMaterial.setShininess(0.02);
 
 
@@ -48,7 +48,7 @@ void ofApp::setup(){
 	perlinLerpSpeed = 0.8f;		//how fast the perlin params interpolate to targets
 
 
-	ofBackground(0); //now black change it later if the colours didn't appreciate corerctly
+	ofBackground(10); //now black change it later if the colours didn't appreciate corerctly
 	mainCam.setPosition(0, 0, 80);//initial position for the 3D viewer
 
 	//make the points inside the mesh
@@ -81,6 +81,7 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update() {
+
 
 	elapsedTime = ofGetElapsedTimef();
 
@@ -150,6 +151,8 @@ void ofApp::update() {
 		ofColor c = samplePalette(n);
 		//Assign color to mesh vertex
 		mainMesh.setColor(i, c);
+		boxMaterial.setDiffuseColor(c+100);
+
 	}
 }
 
@@ -157,6 +160,7 @@ void ofApp::update() {
 void ofApp::draw(){
 
 	mainCam.begin();
+	ofFill();
 	
 		
 	if (b_drawWireFrame) {
