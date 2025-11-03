@@ -33,7 +33,9 @@ void ofApp::setup(){
 	//smooth transitions for perlin parameters
 	perlinRangeTarget = perlinRange;
 	perlinHeightTarget = perlinHeight;
-	perlinLerpSpeed = 0.8f;		//how fast the perlin params interpolate to targets
+	perlinLerpSpeed = 0.5f;		//how fast the perlin params interpolate to targets
+	meshNoiseTime = ofRandom(0.0f, 1000.0f); //radnom for each time is different
+	meshNoiseSpeed = 0.3f; //mdoderate speed
 
 
 	ofBackground(0); //now black change it later if the colours didn't appreciate corerctly
@@ -71,6 +73,8 @@ void ofApp::setup(){
 void ofApp::update() {
 
 	elapsedTime = ofGetElapsedTimef();
+	meshNoiseTime += ofGetLastFrameTime() * meshNoiseSpeed;
+	b_perlinMesh = !b_perlinMesh;
 
 	// Automatic palette change based on timer
 	if (elapsedTime - lastColorChangeTime >= colorChangeInterval) {
@@ -108,8 +112,9 @@ void ofApp::update() {
 				//use the ofMap function to map our x,y inputs to a variable output
 				// range so we can see different levels of distorsion in the perlinNoise
 				// Multiply the z distorsion by perlinHeight to increase the height of the waves
-				newPosition.z = ofNoise(ofMap(x, 0, width, 0, perlinRange),
-									ofMap(y, 0, height, 0, perlinRange)) * perlinHeight;
+				float nx = ofMap(x, 0, width, 0, perlinRange);
+				float ny = ofMap(y, 0, width, 0, perlinRange);
+				newPosition.z = ofNoise(nx, ny, meshNoiseTime) * perlinHeight;
 				mainMesh.setVertex(i, newPosition);
 				//update the position of the vertex with the new
 				i++;
@@ -186,30 +191,30 @@ void ofApp::keyPressed(int key){
 			break;
 
 		//increase or decrease the range of the perlin noise value
-		case OF_KEY_UP:
-			perlinRange += 1.0;
-			perlinRangeTarget = perlinRange;
-			break;
+		//case OF_KEY_UP:
+		//	perlinRange += 1.0;
+		//	perlinRangeTarget = perlinRange;
+		//	break;
 
-		case OF_KEY_DOWN:
-			if (perlinRange > 1.0) {
-				perlinRange -= 1.0;
-				perlinRangeTarget = perlinRange;
-			}
-			break;
+		//case OF_KEY_DOWN:
+		//	if (perlinRange > 1.0) {
+		//		perlinRange -= 1.0;
+		//		perlinRangeTarget = perlinRange;
+		//	}
+		//	break;
 
-		//increase or decrease the height of the perlin noise waves
-		case OF_KEY_RIGHT:
-			perlinHeight += 1.0;
-			perlinHeightTarget = perlinHeight;
-			break;
+		////increase or decrease the height of the perlin noise waves
+		//case OF_KEY_RIGHT:
+		//	perlinHeight += 1.0;
+		//	perlinHeightTarget = perlinHeight;
+		//	break;
 
-		case OF_KEY_LEFT:
-			if (perlinHeight > 1.0) {
-				perlinHeight -= 1.0;
-				perlinHeightTarget = perlinHeight;
-			}
-			break;
+		//case OF_KEY_LEFT:
+		//	if (perlinHeight > 1.0) {
+		//		perlinHeight -= 1.0;
+		//		perlinHeightTarget = perlinHeight;
+		//	}
+		//	break;
 
 		case 'r':
 			// force new palette immediately (still allowed) and reset timer
@@ -314,7 +319,7 @@ ofColor ofApp::samplePalette(float t) {
 	return palette[idx0].getLerped(palette[idx1], frac);
 }
 
-// Generate a random palette but keep it visually pleasant (saturation/brightness constrained)
+// Generate a random palette visually pleasant (saturation/brightness constrained)
 void ofApp::generateRandomPalette() {
 	palette.clear();
 	for (int i = 0; i < paletteSize; i++) {

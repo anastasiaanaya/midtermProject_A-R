@@ -39,7 +39,8 @@ class ofApp : public ofBaseApp{
 
 		//smooth transitions for perlin parameters
 		float perlinRangeTarget, perlinHeightTarget, perlinLerpSpeed;
-
+		//animated mesh noise oveer time
+		float meshNoiseTime, meshNoiseSpeed;
 
 		ofColor samplePalette(float t);
 		float fbm(float x, float y, int octaves = 4, float persistence = 0.5f);
