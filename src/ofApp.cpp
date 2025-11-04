@@ -6,14 +6,15 @@ vector<ofColor> palette;
 void ofApp::setup(){
 
 	pointLight.setup();
-	pointLight.setPosition(100, 100, 400);
+	pointLight.setPosition(100, 100, 100);
 	pointLight.enable();
 	ofEnableLighting();
 	ofEnableDepthTest();
 
 	//ofFloatColor randomColor(ofRandom(1.0), ofRandom(1.0), ofRandom(1.0));
-	/*boxMaterial.setDiffuseColor(randomColor);*/
-	boxMaterial.setShininess(0.02);
+	//boxMaterial.setDiffuseColor(randomColor);
+	/*boxMaterial.setDiffuseColor(ofFloatColor::red);
+	boxMaterial.setShininess(0.0);*/
 
 
 
@@ -47,7 +48,7 @@ void ofApp::setup(){
 	perlinHeightTarget = perlinHeight;
 	perlinLerpSpeed = 0.5f;		//how fast the perlin params interpolate to targets
 	meshNoiseTime = ofRandom(0.0f, 1000.0f); //radnom for each time is different
-	meshNoiseSpeed = 0.3f; //mdoderate speed
+	meshNoiseSpeed = 0.3f; //mdorerate speed
 
 
 	ofBackground(10); //now black change it later if the colours didn't appreciate corerctly
@@ -79,6 +80,9 @@ void ofApp::setup(){
 	//create random palette
 	generateRandomPalette();
 	lastColorChangeTime = ofGetElapsedTimef();
+
+	//box.set(100); // opcional: tamaño del cubo
+	setBoxRotationNormalized(0.25f, 0.5f, 0.0f); // X=90°, Y=180°, Z=0°
 }
 
 //--------------------------------------------------------------
@@ -156,9 +160,19 @@ void ofApp::update() {
 		ofColor c = samplePalette(n);
 		//Assign color to mesh vertex
 		mainMesh.setColor(i, c);
-		boxMaterial.setDiffuseColor(c+100);
+
+
+		//Color del material mateix que malla
+		boxMaterial.setDiffuseColor(c);
 
 	}
+
+	// Animate box rotation based on time
+	float t = ofGetElapsedTimef();
+	float nx = (sin(t * 0.6f) + 1.0f) * 0.05f; // oscila 0..1
+	float ny = (sin(t * 0.8f + 1.0f) + 1.0f) * 0.07f;
+	float nz = (sin(t * 1.1f + 2.0f) + 1.0f) * 0.07f;
+	setBoxRotationNormalized(nx, ny, nz);
 }
 
 //--------------------------------------------------------------
@@ -184,14 +198,28 @@ void ofApp::draw(){
 	}
 
 	boxMaterial.begin();
+	ofEnableDepthTest();
 	ofPushMatrix();
-	ofScale(0.1, 0.1, 0.2); // Escala al 50% en cada eje
-	// Dibuja tu figura aquí
-	box.draw();
-	ofPopMatrix();
 
-	mainCam.end();
+	// Posición relativa (mantén tu translate actual si te funciona)
+	ofTranslate(0, 0, 4.5);
+
+	// Calcula ángulos a partir de los valores normalizados (0..1 -> 0..boxMaxAngle)
+	float angleX = boxRotNormX * boxMaxAngle;
+	float angleY = boxRotNormY * boxMaxAngle;
+	float angleZ = boxRotNormZ * boxMaxAngle;
+
+	// Aplica rotaciones sobre el centro del cubo (orden: Z, Y, X — ajusta si prefieres otra)
+	ofRotateZDeg(angleZ);
+	ofRotateYDeg(angleY);
+	ofRotateXDeg(angleX);
+
+	ofScale(0.1, 0.1, 0.1);
+	box.draw();
+
+	ofPopMatrix();
 	boxMaterial.end();
+	mainCam.end();
 }
 
 //--------------------------------------------------------------
@@ -365,4 +393,11 @@ float ofApp::averageHueOfPalette() {
 		sumHue += hue;
 	}
 	return sumHue / (float)palette.size();
+}
+
+// --- SETTER PARA LA ROTACION DEL CUBO
+void ofApp::setBoxRotationNormalized(float x, float y, float z) {
+	boxRotNormX = ofClamp(x, 0.0f, 1.0f);
+	boxRotNormY = ofClamp(y, 0.0f, 1.0f);
+	boxRotNormZ = ofClamp(z, 0.0f, 1.0f);
 }

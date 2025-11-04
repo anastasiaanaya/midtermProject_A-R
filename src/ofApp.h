@@ -50,6 +50,15 @@ class ofApp : public ofBaseApp{
 		//animated mesh noise oveer time
 		float meshNoiseTime, meshNoiseSpeed;
 
+		// rotation control (normalizado 0..1 por eje)
+		float boxRotNormX = 0.0f;
+		float boxRotNormY = 0.0f;
+		float boxRotNormZ = 0.0f;
+		float boxMaxAngle = 360.0f; // grados: 0..1 -> 0..boxMaxAngle
+
+		// helper para fijar valores (0..1)
+		void setBoxRotationNormalized(float x, float y, float z);
+
 		ofColor samplePalette(float t);
 		float fbm(float x, float y, int octaves = 4, float persistence = 0.5f);
 
