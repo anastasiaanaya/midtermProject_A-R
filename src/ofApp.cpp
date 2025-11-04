@@ -11,6 +11,7 @@ void ofApp::setup(){
 	ofEnableLighting();
 	ofEnableDepthTest();
 
+	//Proves de color del material
 	//ofFloatColor randomColor(ofRandom(1.0), ofRandom(1.0), ofRandom(1.0));
 	//boxMaterial.setDiffuseColor(randomColor);
 	/*boxMaterial.setDiffuseColor(ofFloatColor::red);
@@ -81,7 +82,6 @@ void ofApp::setup(){
 	generateRandomPalette();
 	lastColorChangeTime = ofGetElapsedTimef();
 
-	//box.set(100); // opcional: tamaño del cubo
 	setBoxRotationNormalized(0.25f, 0.5f, 0.0f); // X=90°, Y=180°, Z=0°
 }
 
@@ -168,10 +168,11 @@ void ofApp::update() {
 	}
 
 	// Animate box rotation based on time
-	float t = ofGetElapsedTimef();
-	float nx = (sin(t * 0.6f) + 1.0f) * 0.05f; // oscila 0..1
-	float ny = (sin(t * 0.8f + 1.0f) + 1.0f) * 0.07f;
-	float nz = (sin(t * 1.1f + 2.0f) + 1.0f) * 0.07f;
+	//float t = ofGetElapsedTimef();
+
+	float nx = (sin(elapsedTime * 0.6f) + 1.0f) * 0.05f; // oscila 0..1
+	float ny = (sin(elapsedTime * 0.8f + 1.0f) + 1.0f) * 0.07f;
+	float nz = (sin(elapsedTime * 1.1f + 2.0f) + 1.0f) * 0.07f;
 	setBoxRotationNormalized(nx, ny, nz);
 }
 
@@ -395,7 +396,7 @@ float ofApp::averageHueOfPalette() {
 	return sumHue / (float)palette.size();
 }
 
-// --- SETTER PARA LA ROTACION DEL CUBO
+// PER LA ROTACIÓ DEL CUB
 void ofApp::setBoxRotationNormalized(float x, float y, float z) {
 	boxRotNormX = ofClamp(x, 0.0f, 1.0f);
 	boxRotNormY = ofClamp(y, 0.0f, 1.0f);

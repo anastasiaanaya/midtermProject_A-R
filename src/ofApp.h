@@ -50,7 +50,7 @@ class ofApp : public ofBaseApp{
 		//animated mesh noise oveer time
 		float meshNoiseTime, meshNoiseSpeed;
 
-		// rotation control (normalizado 0..1 por eje)
+		// CUBE rotation control - valors entre 0-1 que es mapegen a 360 graus
 		float boxRotNormX = 0.0f;
 		float boxRotNormY = 0.0f;
 		float boxRotNormZ = 0.0f;
