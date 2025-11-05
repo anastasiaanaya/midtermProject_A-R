@@ -11,11 +11,6 @@ void ofApp::setup(){
 	ofEnableLighting();
 	ofEnableDepthTest();
 
-	//Proves de color del material
-	//ofFloatColor randomColor(ofRandom(1.0), ofRandom(1.0), ofRandom(1.0));
-	//boxMaterial.setDiffuseColor(randomColor);
-	/*boxMaterial.setDiffuseColor(ofFloatColor::red);
-	boxMaterial.setShininess(0.0);*/
 
 
 
@@ -162,14 +157,14 @@ void ofApp::update() {
 		mainMesh.setColor(i, c);
 
 
-		//Color del material mateix que malla
+		//Same color than mesh for the box material
 		boxMaterial.setDiffuseColor(c);
 
 	}
 
 	// Animate box rotation based on time
 	//float t = ofGetElapsedTimef();
-
+	//elapsedTime
 	float nx = (sin(elapsedTime * 0.6f) + 1.0f) * 0.05f; // oscila 0..1
 	float ny = (sin(elapsedTime * 0.8f + 1.0f) + 1.0f) * 0.07f;
 	float nz = (sin(elapsedTime * 1.1f + 2.0f) + 1.0f) * 0.07f;
@@ -202,15 +197,15 @@ void ofApp::draw(){
 	ofEnableDepthTest();
 	ofPushMatrix();
 
-	// Posición relativa (mantén tu translate actual si te funciona)
+	// relative poosition
 	ofTranslate(0, 0, 4.5);
 
-	// Calcula ángulos a partir de los valores normalizados (0..1 -> 0..boxMaxAngle)
+	// angles calcul (0..1 -> 0..boxMaxAngle)
 	float angleX = boxRotNormX * boxMaxAngle;
 	float angleY = boxRotNormY * boxMaxAngle;
 	float angleZ = boxRotNormZ * boxMaxAngle;
 
-	// Aplica rotaciones sobre el centro del cubo (orden: Z, Y, X — ajusta si prefieres otra)
+	// box rotation
 	ofRotateZDeg(angleZ);
 	ofRotateYDeg(angleY);
 	ofRotateXDeg(angleX);
@@ -396,7 +391,7 @@ float ofApp::averageHueOfPalette() {
 	return sumHue / (float)palette.size();
 }
 
-// PER LA ROTACIÓ DEL CUB
+// box rotation
 void ofApp::setBoxRotationNormalized(float x, float y, float z) {
 	boxRotNormX = ofClamp(x, 0.0f, 1.0f);
 	boxRotNormY = ofClamp(y, 0.0f, 1.0f);

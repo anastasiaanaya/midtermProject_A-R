@@ -50,7 +50,7 @@ class ofApp : public ofBaseApp{
 		//animated mesh noise oveer time
 		float meshNoiseTime, meshNoiseSpeed;
 
-		// CUBE rotation control - valors entre 0-1 que es mapegen a 360 graus
+		// CUBE rotation control - valors entre 0-1 que es mapegen a 360º
 		float boxRotNormX = 0.0f;
 		float boxRotNormY = 0.0f;
 		float boxRotNormZ = 0.0f;
@@ -66,26 +66,3 @@ class ofApp : public ofBaseApp{
 		void generateRandomPalette();
 		float averageHueOfPalette();
 };
-
-
-// Linearly interpolates between colors in the palette based on t in [0,1]
-//ofColor ofApp::samplePalette(float t) {
-//	if (palette.empty()) return ofColor::black;
-//	if (palette.size() == 1) return palette[0];
-//
-//	// Clamp t to [0,1]
-//	t = ofClamp(t, 0.0f, 1.0f);
-//
-//	float scaled = t * (palette.size() - 1);
-//	int idx0 = static_cast<int>(floor(scaled));
-//	int idx1 = idx0 + 1;
-//	float frac = scaled - idx0;
-//
-//	if (idx1 >= palette.size()) {
-//		idx1 = palette.size() - 1;
-//		idx0 = idx1;
-//		frac = 0.0f;
-//	}
-//
-//	return palette[idx0].getLerped(palette[idx1], frac);
-//}
